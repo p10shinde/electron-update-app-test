@@ -1,11 +1,15 @@
 {
   "name": "angular-electron",
-  "version": "9.0.4",
+  "version": "10.0.4",
   "description": "Angular 11 with Electron (Typescript + SASS + Hot Reload)",
   "homepage": "https://github.com/p10shinde/electron-update-app-test",
   "author": {
     "name": "Pankaj Shinde",
-    "email": "p10hshinde@gmail.com"
+    "email": "p10shinde@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/p10shinde/electron-update-app-test.git"
   },
   "keywords": [
     "angular",
