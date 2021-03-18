@@ -1,12 +1,17 @@
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-require('update-electron-app')()
+const {autoUpdater} = require("electron-updater");
+const isDev = require('electron-is-dev');
+if (isDev) {
+  autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
+}
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
 function createWindow(): BrowserWindow {
+  autoUpdater.checkForUpdates();
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
@@ -75,6 +80,28 @@ try {
     if (win === null) {
       createWindow();
     }
+  });
+
+  autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for update...');
+  })
+  autoUpdater.on('update-available', (ev, info) => {
+    console.log('Update available.');
+  })
+  autoUpdater.on('update-not-available', (ev, info) => {
+    console.log('Update not available.');
+  })
+  autoUpdater.on('error', (ev, err) => {
+    console.log('Error in auto-updater.');
+  })
+  autoUpdater.on('download-progress', (ev, progressObj) => {
+    console.log('Download progress...');
+  })
+  autoUpdater.on('update-downloaded', (ev, info) => {
+    console.log('Update downloaded; will install in 5 seconds');
+    setTimeout(function() {
+      autoUpdater.quitAndInstall();
+    }, 5000)
   });
 
 } catch (e) {
